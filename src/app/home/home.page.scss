@@ -1,0 +1,79 @@
+ion-content {
+  --background: #f7f7f7;
+  border-radius: 20px;
+}
+
+.welcome {
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 20px;
+}
+
+.welcome h2 span {
+  color: #6500ff;
+  font-weight: bold;
+}
+
+.rooms-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 16px;
+  justify-items: center;
+}
+
+.room-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 130px;
+  height: 130px;
+  border-radius: 20px;
+  background-color: white;
+  box-shadow: 0 4px 10px rgba(224, 216, 216, 0.212);
+  text-align: center;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  cursor: pointer;
+  color: #333;
+}
+
+.room-card:hover {
+  transform: scale(1.05);
+}
+
+.room-card.selected {
+  background: linear-gradient(135deg, #ff00ff, #6500ff);
+  color: white;
+}
+
+.room-card ion-icon {
+  font-size: 36px;
+  color: inherit;
+}
+
+.room-card p {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+ion-footer {
+  --background: white !important; /* Forzar fondo blanco */
+  --ion-background-color: white !important;
+  border-top: 1px solid #e0e0e0; /* Línea superior */
+  height: 60px;
+}
+
+
+ion-footer ion-button {
+  color: #6500ff;
+}
+ion-header ion-toolbar {
+  --background: white !important; /* Forzar fondo blanco */
+  --ion-background-color: white !important;
+  color: #333; /* Color del texto */
+  border-bottom: 1px solid #e0e0e0; /* Línea inferior */
+}

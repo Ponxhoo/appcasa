@@ -1,0 +1,80 @@
+ion-content {
+  --background: linear-gradient(135deg, #ff00ff, #6500ff);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+}
+
+.logo-container {
+  text-align: center;
+  margin-top: 8vh; /* Responsivo: Ajusta espacio superior relativo */
+}
+
+.logo-icon {
+  font-size: 10vw; /* Escala el tamaño del ícono proporcionalmente */
+  color: white;
+}
+
+.logo-container h1 {
+  font-size: 5vw; /* Título responsivo */
+  color: white;
+  margin-top: 2vh;
+  letter-spacing: 2px;
+}
+
+.logo-container h1 span {
+  font-weight: bold;
+}
+
+.input-container {
+  width: 80%; /* Escala el ancho relativo al tamaño de la pantalla */
+  max-width: 400px;
+  margin-top: 5vh;
+}
+
+.input-item {
+  --background: rgba(255, 255, 255, 0.2);
+  --color: white;
+  border-radius: 25px;
+  margin-bottom: 2vh;
+  --padding-start: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.input-item ion-input {
+  color: white;
+}
+
+.input-item ion-icon {
+  color: white;
+}
+
+.button-container {
+  width: 100%;
+  max-width: 400px;
+  background-color: #f7f7f7;
+  border-radius: 30px 30px 0 0; /* Bordes redondeados inversos */
+  padding: 20px;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: auto;
+  position: relative;
+  bottom: 0;
+}
+
+.sign-in-button {
+  --background: #ff00ff;
+  color: white;
+  font-weight: bold;
+  border-radius: 25px;
+}
+
+.create-account-button {
+  --border-color: #ff00ff;
+  --background: transparent;
+  color: #ff00ff;
+  font-weight: bold;
+  border-radius: 25px;
+  margin-top: 1vh;
+}
