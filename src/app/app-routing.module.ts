@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login', 
+    redirectTo: 'home', 
     pathMatch: 'full'
   },
   {
@@ -18,6 +18,15 @@ const routes: Routes = [
   {
     path: 'registro',
     loadComponent: () =>import('./registro/registro.page').then((m) => m.RegistroPage),
+  },
+  {
+    path: 'registro/:id',  // Definir la ruta con un parámetro :id
+    loadComponent: () =>import('./registro/registro.page').then((m) => m.RegistroPage),
+  },
+
+  {
+    path: 'lista',
+    loadComponent: () =>import('./lista/lista.page').then((m) => m.ListaPage),
   },
 
   

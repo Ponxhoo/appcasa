@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { RegistroPage } from './registro.page';
+// Asegúrate de importar RouterModule
+
 
 const routes: Routes = [
   {

@@ -5,7 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { Geolocation } from '@capacitor/geolocation';
 import { Preferences } from '@capacitor/preferences';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-registro',
@@ -54,7 +54,26 @@ export class RegistroPage {
   foto3: string | null = null;
   fotos: string[] = []; // Array para almacenar las fotos seleccionadas
 
-  constructor() {}
+  ////
+
+
+
+  itemId: number = 0;  // Para almacenar el id recibido de la URL
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        this.itemId = +id;  // Convertir a número solo si id tiene un valor
+        console.log('ID del registro:', this.itemId);
+      } else {
+        console.error('ID no encontrado en la URL');
+      }
+    });
+  }
+
 
   async obtenerCoordenadas() {
     try {
