@@ -18,7 +18,7 @@ ion-content {
 
 .rooms-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
   padding: 16px;
   justify-items: center;
@@ -45,7 +45,7 @@ ion-content {
 }
 
 .room-card.selected {
-  background: linear-gradient(135deg, #ff00ff, #6500ff);
+  background: linear-gradient(135deg, #3178dd, #f0f1f5);
   color: white;
 }
 
@@ -69,7 +69,7 @@ ion-footer {
 
 
 ion-footer ion-button {
-  color: #6500ff;
+  color: #3178dd;
 }
 ion-header ion-toolbar {
   --background: white !important; /* Forzar fondo blanco */

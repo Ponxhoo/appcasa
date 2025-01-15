@@ -9,12 +9,10 @@ import { Component } from '@angular/core';
 export class HomePage {
 
   rooms = [
-    { name: 'Bedroom', icon: 'bed-outline', isSelected: false },
-    { name: 'Living room', icon: 'tv-outline', isSelected: true },
-    { name: 'Kitchen', icon: 'restaurant-outline', isSelected: false },
-    { name: 'Bathroom', icon: 'water-outline', isSelected: false },
-    { name: 'Dining room', icon: 'wine-outline', isSelected: false },
-    { name: 'Office', icon: 'desktop-outline', isSelected: false },
+    { name: 'Carga de datos', icon: 'bed-outline', isSelected: false },
+    { name: 'Realizar Inspección', icon: 'tv-outline', isSelected: true },
+    { name: 'Enviar Información', icon: 'restaurant-outline', isSelected: false },
+
   ];
 
   selectRoom(room: any) {

@@ -1,0 +1,247 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Solicitud de Servicio</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Sección 1: Información general -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>2. Solicita Servicio</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <ion-item>
+              <ion-label position="floating">Identificación</ion-label>
+              <ion-input type="text" [(ngModel)]="identificacion"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item>
+              <ion-label position="floating">CUU</ion-label>
+              <ion-input type="text" [(ngModel)]="cuu"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Razón Social</ion-label>
+              <ion-input type="text" [(ngModel)]="razonSocial"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Dirección</ion-label>
+              <ion-input type="text" [(ngModel)]="direccion"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Correo Electrónico</ion-label>
+              <ion-input type="email" [(ngModel)]="correoElectronico"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Representante Legal</ion-label>
+              <ion-input type="text" [(ngModel)]="representanteLegal"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Sección 2: Detalles del local -->
+  <ion-card>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <ion-item>
+              <ion-label position="floating">Dirección Local</ion-label>
+              <ion-input type="text" [(ngModel)]="direccionLocal"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item>
+              <ion-label position="floating">Área Local (M²)</ion-label>
+              <ion-input type="text" [(ngModel)]="areaLocal"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label>Tipo de Construcción</ion-label>
+              <ion-select [(ngModel)]="tipoConstruccion">
+                <ion-select-option value="hormigon">Hormigón</ion-select-option>
+                <ion-select-option value="madera">Madera</ion-select-option>
+                <ion-select-option value="metal">Metal</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label>Riesgo de Incendio</ion-label>
+              <ion-select [(ngModel)]="riesgoIncendio">
+                <ion-select-option value="leve">Leve</ion-select-option>
+                <ion-select-option value="moderado">Moderado</ion-select-option>
+                <ion-select-option value="alto">Alto</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label>Ventilación</ion-label>
+              <ion-select [(ngModel)]="ventilacion">
+                <ion-select-option value="natural">Natural</ion-select-option>
+                <ion-select-option value="forzada">Forzada</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Sección 3: Implementos -->
+  <ion-item-divider class="section-divider">
+    <ion-label>Implementos</ion-label>
+  </ion-item-divider>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <ion-item>
+              <ion-label>Cuenta con Bodega</ion-label>
+              <ion-select [(ngModel)]="bodega">
+                <ion-select-option value="Si">Sí</ion-select-option>
+                <ion-select-option value="No">No</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label>Breaker Adecuado</ion-label>
+              <ion-select [(ngModel)]="breakerAdecuado">
+                <ion-select-option value="Si">Sí</ion-select-option>
+                <ion-select-option value="No">No</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label>Señalización</ion-label>
+              <ion-select [(ngModel)]="senalizacion">
+                <ion-select-option value="Si">Sí</ion-select-option>
+                <ion-select-option value="No">No</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label>Salida de Emergencia</ion-label>
+              <ion-select [(ngModel)]="salidaEmergencia">
+                <ion-select-option value="Si">Sí</ion-select-option>
+                <ion-select-option value="No">No</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label>Número de Surtidores</ion-label>
+              <ion-input type="number" placeholder="NRO SURTIDORES es opcional" [(ngModel)]="nroSurtidores"></ion-input>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="6">
+            <ion-item>
+              <ion-label>Instalación Adecuada</ion-label>
+              <ion-select [(ngModel)]="instalacionAdecuada">
+                <ion-select-option value="Si">Sí</ion-select-option>
+                <ion-select-option value="No">No</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label>Cajas Abiertas</ion-label>
+              <ion-select [(ngModel)]="cajasAbiertas">
+                <ion-select-option value="Si">Sí</ion-select-option>
+                <ion-select-option value="No">No</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label>Rótulo ECU 911</ion-label>
+              <ion-select [(ngModel)]="rotuloEcu911">
+                <ion-select-option value="Si">Sí</ion-select-option>
+                <ion-select-option value="No">No</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label>Plan de Emergencia</ion-label>
+              <ion-select [(ngModel)]="planEmergencia">
+                <ion-select-option value="Si">Sí</ion-select-option>
+                <ion-select-option value="No">No</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Observación</ion-label>
+              <ion-input type="text" [(ngModel)]="observacion"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-row>
+    <ion-col>
+      <input type="file" accept="image/*" multiple (change)="seleccionarFotos($event)" />
+    </ion-col>
+  </ion-row>
+
+  <!-- Sección 4: Subir fotos -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Subir Fotos</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" color="secondary" (click)="subirFotos()">Seleccionar Fotos</ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="fotos.length > 0">
+          <ion-col size="4" *ngFor="let foto of fotos">
+            <ion-img [src]="foto"></ion-img>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="fotos.length >= 3">
+          <ion-col>
+            <p style="color: red; text-align: center;">Ya has alcanzado el límite de 3 fotos.</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Botones -->
+  <div class="button-container">
+    <ion-button expand="block" color="success" (click)="obtenerCoordenadas()">Obtener Coordenadas</ion-button>
+    <ion-button expand="block" color="primary" (click)="actualizarInformacion()">Guardar Información</ion-button>
+  </div>
+</ion-content>
