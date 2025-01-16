@@ -1,30 +1,170 @@
-ion-card {
-  margin: 16px;
-  padding: 16px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+/* Estilo del ícono de retroceso */
+.back-icon {
+  color: #3178dd;
+  font-size: 24px;
 }
 
-ion-item {
-  --background: #f9f9f9;
-  --color: #333;
+/* Fondo general */
+ion-content {
+  --background: #f7f7f7;
 }
 
-ion-item-divider.section-divider {
-  margin-top: 20px;
-  border-bottom: 1px solid #ccc;
-  background-color: #f1f1f1;
-  text-transform: uppercase;
+/* Estilo de la sección de información general */
+.section-divider {
+  background: #3178dd;
+  color: #ffffff;
   font-weight: bold;
-  color: #666;
+  text-align: center;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 16px;
 }
 
-.button-container {
-  display: flex;
-  justify-content: space-between;
+/* Tarjeta de información */
+.info-card {
+  background: #f5f9ff;
+  border: 1px solid #3178dd;
+  box-shadow: 0px 4px 8px rgba(49, 120, 221, 0.2);
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+/* Estilos de los ítems (inputs) */
+.styled-item {
+  border: 1px solid #3178dd;
+  background: #ffffff;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.styled-item:focus-within {
+  border-color: #285bb5;
+  box-shadow: 0px 4px 8px rgba(40, 91, 181, 0.5);
+}
+
+.styled-item ion-label {
+  color: #3178dd;
+  font-weight: bold;
+}
+
+.styled-item ion-input {
+  color: #3178dd;
+}
+
+/* Botones */
+.button-container ion-button {
+  --border-radius: 8px;
+  --box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* General Styles for the Form */
+ion-item {
+  --background: #ffffff;
+  --border-color: #e0e0e0;
+  border: 1px solid var(--border-color);
+  border-radius: 8px; /* Radio para las cajas de texto */
+  margin-bottom: 16px; /* Espaciado entre campos */
+  padding: 8px; /* Espaciado interno */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+ion-item:focus-within {
+  border-color: #3178dd; /* Azul en foco */
+  box-shadow: 0px 4px 8px rgba(49, 120, 221, 0.5); /* Sombra azul al enfocarse */
+}
+
+/* Label Styles */
+ion-label {
+  color: #333;
+  font-size: 14px;
+  margin-bottom: 4px; /* Separación entre label y caja de texto */
+}
+
+/* Input Styles */
+ion-input {
+  color: #555;
+  font-size: 16px;
+  margin-top: 4px;
+}
+
+/* Placeholder Styling */
+ion-input::placeholder {
+  color: #a0a0a0;
+  font-style: italic;
+}
+
+/* Card Styling */
+ion-card {
+  border-radius: 12px; /* Radio en el borde del formulario */
+  border: 1px solid #e0e0e0;
+  padding: 5px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 5px;
+}
+
+ion-card-header {
+  background-color: #f7faff; /* Fondo claro */
+  border-radius: 8px 8px 0 0;
+  padding: 8px;
+}
+
+ion-card-content {
+  padding: 4px;
+}
+
+.foto-container {
+  position: relative;
+}
+
+.foto-container ion-img {
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.delete-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 10;
+  --background: transparent;
+  --color: red;
+}
+
+
+/* Espaciado y alineación */
+.form-row {
   margin-top: 16px;
+  gap: 24px; /* Espacio entre columnas */
 }
 
-ion-button {
-  width: 30%;
+.form-item {
+  --background: #ffffff;
+  border: 1px solid #e0e0e0; /* Borde gris claro */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  margin-bottom: 16px; /* Espaciado entre campos */
+  padding: 8px;
 }
+
+/* Etiquetas */
+ion-label {
+  font-weight: bold;
+  color: #333; /* Color del texto */
+}
+
+/* Select */
+ion-select {
+  color: #3178dd; /* Color del texto */
+  font-size: 14px;
+}
+
+/* Hover y enfoque */
+.form-item:focus-within {
+  border-color: #3178dd; /* Resalta el borde en azul cuando el campo está enfocado */
+  box-shadow: 0px 4px 8px rgba(49, 120, 221, 0.3); /* Sombra azul */
+}
+
+

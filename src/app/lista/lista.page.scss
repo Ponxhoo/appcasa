@@ -1,0 +1,100 @@
+ion-header {
+    ion-toolbar {
+      --background: #3178dd; /* Fondo azul */
+      --ion-background-color: #3178dd;
+      color: white; /* Texto blanco */
+      font-weight: bold;
+      border-bottom: 1px solid #e0e0e0; /* Línea inferior */
+    }
+  
+    ion-button {
+      color: white; /* Botón blanco */
+    }
+  
+    ion-icon {
+      font-size: 24px; /* Icono ligeramente más grande */
+    }
+  }
+  
+  ion-content {
+    --background: #f7f7f7; /* Fondo claro */
+    padding: 16px;
+  }
+  
+  ion-card {
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    background-color: white;
+    padding: 16px;
+  }
+  
+  ion-card-header {
+    text-align: center;
+    padding-bottom: 16px;
+  
+    ion-card-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+    }
+  }
+  
+  ion-segment {
+    margin-top: 16px;
+    --background: #e0e7ff; /* Fondo claro para segmento */
+    --indicator-color: #3178dd; /* Indicador azul */
+    --ion-color-primary: #3178dd;
+  }
+  
+  ion-segment-button {
+    font-size: 14px;
+    font-weight: bold;
+    color: #3178dd; /* Texto azul */
+    --background-hover: #d6e3ff; /* Fondo en hover */
+  }
+  
+  ion-list {
+    margin-top: 16px;
+  
+    ion-item {
+      border-radius: 12px;
+      margin-bottom: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      background-color: white;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+      &:hover {
+        transform: translateY(-2px); /* Efecto alzado */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Sombra más prominente */
+      }
+  
+      ion-icon {
+        font-size: 20px; /* Iconos más grandes */
+        color: #3178dd;
+      }
+  
+      ion-label {
+        h3 {
+          font-size: 16px;
+          font-weight: bold;
+          color: #333;
+        }
+  
+        p {
+          font-size: 12px;
+          color: #555;
+        }
+      }
+  
+      ion-button {
+        color: #3178dd; /* Botón azul */
+        font-weight: bold;
+        font-size: 14px;
+  
+        &:hover {
+          color: #003d99; /* Color más oscuro en hover */
+        }
+      }
+    }
+  }
+  

@@ -17,7 +17,7 @@ export class HomePage {
   // ];
 
   rooms = [
-    { name: 'Carga de datos', icon: 'cloud-upload-outline', isSelected: true, route: '' },
+    { name: 'Carga de datos', icon: 'cloud-upload-outline', isSelected: true, route: 'login' },
     { name: 'Realizar Inspección', icon: 'clipboard-outline', isSelected: false, route: 'lista' },
     { name: 'Enviar Información', icon: 'send-outline', isSelected: false, route: '' },
   ];

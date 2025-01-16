@@ -1,43 +1,49 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Solicitud de Servicio</ion-title>
+    <ion-buttons slot="start">
+      <ion-button>
+        <ion-icon slot="icon-only" name="arrow-back-outline" class="back-icon"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Registro de Novedades</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
   <!-- Sección 1: Información general -->
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>2. Solicita Servicio</ion-card-title>
-    </ion-card-header>
+  <ion-item-divider class="section-divider">
+    <ion-label>Información General</ion-label>
+  </ion-item-divider>
+
+  <ion-card class="info-card">
     <ion-card-content>
       <ion-grid>
         <ion-row>
           <ion-col size="6">
             <ion-item>
-              <ion-label position="floating">Identificación</ion-label>
-              <ion-input type="text" [(ngModel)]="identificacion"></ion-input>
+              <ion-label position="stacked"><b>Identificación</b> </ion-label>
+              <ion-input type="text"  [(ngModel)]="identificacion"></ion-input>
             </ion-item>
           </ion-col>
           <ion-col size="6">
-            <ion-item>
-              <ion-label position="floating">CUU</ion-label>
-              <ion-input type="text" [(ngModel)]="cuu"></ion-input>
+            <ion-item >
+              <ion-label position="stacked">CUU</ion-label>
+              <ion-input type="text"  readonly [(ngModel)]="cuu"></ion-input>
             </ion-item>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
             <ion-item>
-              <ion-label position="floating">Razón Social</ion-label>
-              <ion-input type="text" [(ngModel)]="razonSocial"></ion-input>
+              <ion-label position="stacked"><b>Razón Social</b></ion-label>
+              <ion-input type="text"  [(ngModel)]="razonSocial"></ion-input>
             </ion-item>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
             <ion-item>
-              <ion-label position="floating">Dirección</ion-label>
+              <ion-label position="stacked">Dirección</ion-label>
               <ion-input type="text" [(ngModel)]="direccion"></ion-input>
             </ion-item>
           </ion-col>
@@ -45,7 +51,7 @@
         <ion-row>
           <ion-col>
             <ion-item>
-              <ion-label position="floating">Correo Electrónico</ion-label>
+              <ion-label position="stacked">Correo Electrónico</ion-label>
               <ion-input type="email" [(ngModel)]="correoElectronico"></ion-input>
             </ion-item>
           </ion-col>
@@ -53,7 +59,7 @@
         <ion-row>
           <ion-col>
             <ion-item>
-              <ion-label position="floating">Representante Legal</ion-label>
+              <ion-label position="stacked">Representante Legal</ion-label>
               <ion-input type="text" [(ngModel)]="representanteLegal"></ion-input>
             </ion-item>
           </ion-col>
@@ -157,10 +163,6 @@
                 <ion-select-option value="No">No</ion-select-option>
               </ion-select>
             </ion-item>
-            <ion-item>
-              <ion-label>Número de Surtidores</ion-label>
-              <ion-input type="number" placeholder="NRO SURTIDORES es opcional" [(ngModel)]="nroSurtidores"></ion-input>
-            </ion-item>
           </ion-col>
 
           <ion-col size="6">
@@ -198,6 +200,15 @@
         <ion-row>
           <ion-col>
             <ion-item>
+              <ion-label>N° de Surtidores</ion-label>
+              <ion-input type="number" placeholder="Es opcional" [(ngModel)]="nroSurtidores"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item>
               <ion-label position="floating">Observación</ion-label>
               <ion-input type="text" [(ngModel)]="observacion"></ion-input>
             </ion-item>
@@ -207,11 +218,7 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-row>
-    <ion-col>
-      <input type="file" accept="image/*" multiple (change)="seleccionarFotos($event)" />
-    </ion-col>
-  </ion-row>
+ 
 
   <!-- Sección 4: Subir fotos -->
   <ion-card>
@@ -222,14 +229,25 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-button expand="block" color="secondary" (click)="subirFotos()">Seleccionar Fotos</ion-button>
+            <!-- <ion-button expand="block" color="secondary" (click)="subirFotos()">Seleccionar Fotos</ion-button> -->
           </ion-col>
         </ion-row>
         <ion-row *ngIf="fotos.length > 0">
-          <ion-col size="4" *ngFor="let foto of fotos">
-            <ion-img [src]="foto"></ion-img>
+          <ion-col size="4" *ngFor="let foto of fotos; let i = index">
+            <div class="foto-container">
+              <ion-img [src]="foto"></ion-img>
+              <ion-button
+                class="delete-button"
+                fill="clear"
+                color="danger"
+                (click)="eliminarFoto(i)"
+              >
+                <ion-icon name="close-circle-outline"></ion-icon>
+              </ion-button>
+            </div>
           </ion-col>
         </ion-row>
+        
         <ion-row *ngIf="fotos.length >= 3">
           <ion-col>
             <p style="color: red; text-align: center;">Ya has alcanzado el límite de 3 fotos.</p>
@@ -239,9 +257,13 @@
     </ion-card-content>
   </ion-card>
 
+
   <!-- Botones -->
   <div class="button-container">
     <ion-button expand="block" color="success" (click)="obtenerCoordenadas()">Obtener Coordenadas</ion-button>
+    <ion-button expand="block" color="secondary"  (click)="manejarFotos()">Seleccionar Fotos</ion-button>
+    <!-- <ion-button expand="block" color="primary" (click)="abrirSelectorDeFotos()">Subir Fotos</ion-button> -->
+
     <ion-button expand="block" color="primary" (click)="actualizarInformacion()">Guardar Información</ion-button>
   </div>
 </ion-content>

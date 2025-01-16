@@ -18,11 +18,34 @@ ion-content {
 
 .rooms-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr); /* Por defecto: 3 columnas */
   gap: 16px;
   padding: 16px;
-  justify-items: center;
+  justify-items: center !important;
+  margin-top: 10%; /* Valor predeterminado */
+
+  /* Ajustes responsivos */
+  @media (max-width: 1024px) and (orientation: portrait) { /* Tablets en modo vertical */
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 30%;
+  }
+
+  @media (max-width: 1024px) and (orientation: landscape) { /* Tablets en modo horizontal */
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 40%; /* Ajusta el margen en horizontal */
+  }
+
+  @media (max-width: 768px) { /* Teléfonos grandes */
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 20%;
+  }
+
+  @media (max-width: 480px) { /* Teléfonos pequeños */
+    grid-template-columns: 1fr;
+    margin-top: 10%;
+  }
 }
+
 
 .room-card {
   display: flex;
@@ -45,7 +68,7 @@ ion-content {
 }
 
 .room-card.selected {
-  background: linear-gradient(135deg, #3178dd, #f0f1f5);
+  background: linear-gradient(135deg, #f0f1f5, #3178dd);
   color: white;
 }
 
@@ -65,12 +88,21 @@ ion-footer {
   --ion-background-color: white !important;
   border-top: 1px solid #e0e0e0; /* Línea superior */
   height: 60px;
-}
 
+  /* Centrar botones */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Espaciado entre los botones */
+  gap: 20px;
+}
 
 ion-footer ion-button {
   color: #3178dd;
+  font-size: 20px;
 }
+
 ion-header ion-toolbar {
   --background: white !important; /* Forzar fondo blanco */
   --ion-background-color: white !important;

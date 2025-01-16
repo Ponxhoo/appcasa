@@ -89,35 +89,7 @@ export class RegistroPage {
     }
   }
 
-  async subirFotos() {
-    try {
-      if (this.fotos.length >= 3) {
-        alert('Ya has seleccionado el máximo de 3 fotos.');
-        return;
-      }
   
-      const image = await Camera.getPhoto({
-        quality: 90,
-        resultType: CameraResultType.DataUrl, // Usar DataUrl para obtener la imagen en base64
-        source: CameraSource.Photos, // Selección desde la galería
-      });
-  
-      const fotoBase64 = image.dataUrl || ''; // Ruta base64 de la imagen
-      this.fotos.push(fotoBase64); // Agregar al array de fotos
-  
-      // Asignar nombres únicos a las fotos
-      const timestamp = Date.now();
-      if (this.fotos.length === 1) this.foto1 = `foto1_${timestamp}.jpg`;
-      if (this.fotos.length === 2) this.foto2 = `foto2_${timestamp}.jpg`;
-      if (this.fotos.length === 3) this.foto3 = `foto3_${timestamp}.jpg`;
-  
-      console.log('Foto seleccionada:', fotoBase64);
-      console.log('Nombres asignados:', { foto1: this.foto1, foto2: this.foto2, foto3: this.foto3 });
-    } catch (error) {
-      console.error('Error seleccionando foto:', error);
-      alert('No se pudo seleccionar la foto. Intenta nuevamente.');
-    }
-  }
 
   async actualizarInformacion() {
     try {
@@ -177,32 +149,66 @@ export class RegistroPage {
     }
   }
 
-  seleccionarFotos(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files) {
-      const archivos = Array.from(input.files);
-      archivos.forEach((archivo, index) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          if (this.fotos.length < 3) {
-            // Almacenar la foto en base64 en el array
-            this.fotos.push(reader.result as string);
+  async manejarFotos(event?: Event) {
+    try {
+      if (this.fotos.length >= 3) {
+        alert('Ya has seleccionado el máximo de 3 fotos.');
+        return;
+      }
   
-            // Asignar nombres únicos a las fotos
-            const timestamp = Date.now();
-            if (this.fotos.length === 1) this.foto1 = `foto1_${timestamp}_${archivo.name}`;
-            if (this.fotos.length === 2) this.foto2 = `foto2_${timestamp}_${archivo.name}`;
-            if (this.fotos.length === 3) this.foto3 = `foto3_${timestamp}_${archivo.name}`;
+      if (event) {
+        // Manejar selección desde el input de archivos
+        const input = event.target as HTMLInputElement;
+        if (input.files) {
+          const archivos = Array.from(input.files);
   
-            console.log('Foto seleccionada:', reader.result);
-            console.log('Nombres asignados:', { foto1: this.foto1, foto2: this.foto2, foto3: this.foto3 });
-          } else {
-            alert('Solo puedes seleccionar hasta 3 fotos.');
-          }
-        };
-        reader.readAsDataURL(archivo);
-      });
+          archivos.forEach((archivo) => {
+            if (this.fotos.length < 3) {
+              const reader = new FileReader();
+              reader.onload = () => {
+                const fotoBase64 = reader.result as string;
+                this.fotos.push(fotoBase64);
+  
+                // Asignar nombres únicos
+                const timestamp = Date.now();
+                if (this.fotos.length === 1) this.foto1 = `foto1_${timestamp}_${archivo.name}`;
+                if (this.fotos.length === 2) this.foto2 = `foto2_${timestamp}_${archivo.name}`;
+                if (this.fotos.length === 3) this.foto3 = `foto3_${timestamp}_${archivo.name}`;
+              };
+              reader.readAsDataURL(archivo);
+            }
+          });
+        }
+      } else {
+        // Manejar selección desde cámara/galería
+        const image = await Camera.getPhoto({
+          quality: 90,
+          resultType: CameraResultType.DataUrl,
+          source: CameraSource.Photos,
+        });
+  
+        const fotoBase64 = image.dataUrl || '';
+        this.fotos.push(fotoBase64);
+  
+        // Asignar nombres únicos
+        const timestamp = Date.now();
+        if (this.fotos.length === 1) this.foto1 = `foto1_${timestamp}.jpg`;
+        if (this.fotos.length === 2) this.foto2 = `foto2_${timestamp}.jpg`;
+        if (this.fotos.length === 3) this.foto3 = `foto3_${timestamp}.jpg`;
+      }
+    } catch (error) {
+      console.error('Error manejando fotos:', error);
+      alert('No se pudo procesar la foto. Intenta nuevamente.');
     }
   }
+
+  eliminarFoto(index: number) {
+    if (index > -1) {
+      this.fotos.splice(index, 1); // Elimina la foto del array
+      console.log(`Foto en índice ${index} eliminada.`);
+    }
+  }
+  
+  
   
 }
