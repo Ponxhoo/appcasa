@@ -1,0 +1,36 @@
+<ion-header>
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ion-button>
+          <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Trámites</ion-card-title>
+        <ion-segment value="pendientes" (ionChange)="onSegmentChange($event)">
+          <ion-segment-button value="pendientes">Pendientes</ion-segment-button>
+          <ion-segment-button value="aprobados">Aprobados</ion-segment-button>
+        </ion-segment>
+      </ion-card-header>
+  
+      <ion-list>
+        <ion-item *ngFor="let item of items">
+          <ion-icon slot="start" name="document-outline"></ion-icon>
+          <ion-label>
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+          </ion-label>
+          <ion-button slot="end" (click)="goToRegistro(item.id)" fill="clear">
+            Ver Registro
+          </ion-button>
+        </ion-item>
+      </ion-list>
+      
+    </ion-card>
+  </ion-content>
+  
