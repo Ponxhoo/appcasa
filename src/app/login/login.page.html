@@ -1,27 +1,17 @@
-<ion-content class="login-content">
-  <!-- Sección superior: Logo y título -->
-  <div class="logo-container">
-    <ion-icon name="home-outline" class="logo-icon"></ion-icon>
-    <h1>SMART <span>HOME</span></h1>
-  </div>
-
-  <!-- Inputs -->
-  <div class="input-container">
-    <ion-item class="input-item">
-      <ion-input placeholder="EMAIL" type="email"></ion-input>
-      <ion-icon slot="end" name="person-outline"></ion-icon>
-    </ion-item>
-    <ion-item class="input-item">
-      <ion-input placeholder="PASSWORD" type="password"></ion-input>
-      <ion-icon slot="end" name="lock-closed-outline"></ion-icon>
-    </ion-item>
-  </div>
-
-  <!-- Botones -->
-  <div class="button-container">
-    <ion-button expand="block" class="sign-in-button">SIGN IN</ion-button>
-    <ion-button expand="block" class="create-account-button" fill="outline">
-      CREATE AN ACCOUNT
-    </ion-button>
+<ion-content>
+  <div class="background">
+    <div class="profile-container">
+      <ion-icon name="person-circle-outline" class="profile-icon"></ion-icon>
+    </div>
+    <div class="form-container">
+      <div class="custom-input">
+        <ion-input placeholder="Username"></ion-input>
+      </div>
+      <div class="custom-input">
+        <ion-input type="password" placeholder="Password"></ion-input>
+      </div>
+      <ion-button expand="block" class="login-button">Login</ion-button>
+  
+    </div>
   </div>
 </ion-content>
