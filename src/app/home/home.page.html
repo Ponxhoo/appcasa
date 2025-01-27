@@ -8,7 +8,9 @@
 
 <ion-content class="home-content">
   <div class="welcome">
-    <h2>Hello, <span>John!</span></h2>
+    <h2>Hola, <span ><ion-input  readonly type="text" [(ngModel)]="identificacion"></ion-input></span> 
+      
+    </h2>
   </div>
   <div class="rooms-container">
     <div
@@ -23,4 +25,17 @@
     </div>
   </div>
 </ion-content>
+
+
+<!-- <<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="confirmLogout()">
+        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+        <ion-label>Cerrar Sesión</ion-label>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer> -->
+
 

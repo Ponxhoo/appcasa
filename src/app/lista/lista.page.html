@@ -1,36 +1,38 @@
 <ion-header>
-    <ion-toolbar color="light">
-      <ion-buttons slot="start">
-        <ion-button>
-          <ion-icon slot="icon-only" name="arrow-back-outline" style="color: #3178dd; font-size: 24px;"></ion-icon>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back-outline" style="color: #3178dd; font-size: 24px;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Inspecciones a realizar</ion-card-title>
+      <ion-segment value="pendientes" (ionChange)="onSegmentChange($event)">
+        <ion-segment-button value="pendientes" style="text-align: left;">
+          Lista de contribuyentes
+        </ion-segment-button>
+      </ion-segment>
+    </ion-card-header>
+
+    <ion-list>
+      <ion-item *ngFor="let item of items">
+        <ion-icon slot="start" name="document-outline"></ion-icon>
+        <ion-label>
+          <h3>{{ item.identificacion }}</h3>
+          <p>{{ item.razon }}</p>
+          <p>{{ item.description }}</p>
+          <p>Estado: {{ item.estado }}</p>
+        </ion-label>
+        <!-- Mostrar el botón solo si el estado es "Pendiente" -->
+        <ion-button *ngIf="item.estado === 'Pendiente'" slot="end" (click)="goToRegistro(item.id)" fill="clear">
+          Actualizar
         </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
-  
-  <ion-content>
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Trámites</ion-card-title>
-        <ion-segment value="pendientes" (ionChange)="onSegmentChange($event)">
-          <ion-segment-button value="pendientes">Pendientes</ion-segment-button>
-          <ion-segment-button value="aprobados">Aprobados</ion-segment-button>
-        </ion-segment>
-      </ion-card-header>
-  
-      <ion-list>
-        <ion-item *ngFor="let item of items">
-          <ion-icon slot="start" name="document-outline"></ion-icon>
-          <ion-label>
-            <h3>{{ item.title }}</h3>
-            <p>{{ item.description }}</p>
-          </ion-label>
-          <ion-button slot="end" (click)="goToRegistro(item.id)" fill="clear">
-            Ver Registro
-          </ion-button>
-        </ion-item>
-      </ion-list>
-      
-    </ion-card>
-  </ion-content>
-  
+      </ion-item>
+    </ion-list>
+  </ion-card>
+</ion-content>

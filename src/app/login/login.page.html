@@ -5,13 +5,12 @@
     </div>
     <div class="form-container">
       <div class="custom-input">
-        <ion-input placeholder="Username"></ion-input>
+        <ion-input type="text" placeholder="Identificación" [(ngModel)]="identificacion"></ion-input>
       </div>
       <div class="custom-input">
-        <ion-input type="password" placeholder="Password"></ion-input>
+        <ion-input type="email" placeholder="Email" [(ngModel)]="email"></ion-input>
       </div>
-      <ion-button expand="block" class="login-button">Login</ion-button>
-  
+      <ion-button expand="block" class="login-button" (click)="saveData()">Ingresar</ion-button>
     </div>
   </div>
 </ion-content>

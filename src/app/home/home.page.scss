@@ -18,7 +18,7 @@ ion-content {
 
 .rooms-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Por defecto: 3 columnas */
+  grid-template-columns: repeat(1, 1fr); /* Por defecto: 3 columnas */
   gap: 16px;
   padding: 16px;
   justify-items: center !important;
@@ -26,17 +26,17 @@ ion-content {
 
   /* Ajustes responsivos */
   @media (max-width: 1024px) and (orientation: portrait) { /* Tablets en modo vertical */
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     margin-top: 30%;
   }
 
   @media (max-width: 1024px) and (orientation: landscape) { /* Tablets en modo horizontal */
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     margin-top: 40%; /* Ajusta el margen en horizontal */
   }
 
   @media (max-width: 768px) { /* Teléfonos grandes */
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     margin-top: 20%;
   }
 
@@ -52,8 +52,10 @@ ion-content {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 130px;
-  height: 130px;
+  width: 100%; /* Asegura que se adapte al ancho disponible */
+  max-width: 100%; /* Agregué un máximo para mejorar en pantallas más grandes */
+  height: auto; /* Ajusta la altura según el contenido */
+  padding: 20px; /* Agrega espacio interno */
   border-radius: 20px;
   background-color: white;
   box-shadow: 0 4px 10px rgba(224, 216, 216, 0.212);
@@ -62,6 +64,13 @@ ion-content {
   cursor: pointer;
   color: #333;
 }
+
+@media (min-width: 768px) {
+  .room-card {
+    max-width: 100%;/* Más ancho para pantallas más grandes */
+  }
+}
+
 
 .room-card:hover {
   transform: scale(1.05);
@@ -108,4 +117,24 @@ ion-header ion-toolbar {
   --ion-background-color: white !important;
   color: #333; /* Color del texto */
   border-bottom: 1px solid #e0e0e0; /* Línea inferior */
+}
+
+
+.swal2-popup {
+  margin: 0 auto !important; /* Centrar */
+  padding: 0 !important; /* Evitar padding extra */
+  box-shadow: none !important; /* Quita bordes innecesarios */
+}
+
+.custom-swal-popup {
+  border-radius: 15px; /* Bordes redondeados */
+  padding: 20px; /* Espaciado */
+  font-size: 5px; /* Tamaño del texto */
+}
+
+.custom-swal-title {
+  font-size: 8px; /* Tamaño del texto */
+  color: #007bff; /* Color del texto */
+  font-weight: bold; /* Negrita */
+  text-align: center; /* Centrar el texto */
 }

@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button>
-        <ion-icon slot="icon-only" name="arrow-back-outline" class="back-icon"></ion-icon>
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back-outline" style="color: #3178dd; font-size: 24px;"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>Registro de Novedades</ion-title>
@@ -19,18 +19,18 @@
     <ion-card-content>
       <ion-grid>
         <ion-row>
-          <ion-col size="6">
+          <ion-col >
             <ion-item>
               <ion-label position="stacked"><b>Identificación</b> </ion-label>
               <ion-input type="text"  [(ngModel)]="identificacion"></ion-input>
             </ion-item>
           </ion-col>
-          <ion-col size="6">
+          <!-- <ion-col size="6" hidden>
             <ion-item >
               <ion-label position="stacked">CUU</ion-label>
               <ion-input type="text"  readonly [(ngModel)]="cuu"></ion-input>
             </ion-item>
-          </ion-col>
+          </ion-col> -->
         </ion-row>
         <ion-row>
           <ion-col>
@@ -48,22 +48,22 @@
             </ion-item>
           </ion-col>
         </ion-row>
-        <ion-row>
+        <!-- <ion-row>
           <ion-col>
             <ion-item>
               <ion-label position="stacked">Correo Electrónico</ion-label>
               <ion-input type="email" [(ngModel)]="correoElectronico"></ion-input>
             </ion-item>
           </ion-col>
-        </ion-row>
-        <ion-row>
+        </ion-row> -->
+        <!-- <ion-row>
           <ion-col>
             <ion-item>
               <ion-label position="stacked">Representante Legal</ion-label>
               <ion-input type="text" [(ngModel)]="representanteLegal"></ion-input>
             </ion-item>
           </ion-col>
-        </ion-row>
+        </ion-row> -->
       </ion-grid>
     </ion-card-content>
   </ion-card>
@@ -73,19 +73,23 @@
     <ion-card-content>
       <ion-grid>
         <ion-row>
-          <ion-col size="6">
+          <ion-col>
             <ion-item>
               <ion-label position="floating">Dirección Local</ion-label>
               <ion-input type="text" [(ngModel)]="direccionLocal"></ion-input>
             </ion-item>
           </ion-col>
-          <ion-col size="6">
+          
+        </ion-row>
+        <ion-row>
+          <ion-col >
             <ion-item>
               <ion-label position="floating">Área Local (M²)</ion-label>
               <ion-input type="text" [(ngModel)]="areaLocal"></ion-input>
             </ion-item>
           </ion-col>
         </ion-row>
+
         <ion-row>
           <ion-col>
             <ion-item>
@@ -133,62 +137,127 @@
   <ion-card>
     <ion-card-content>
       <ion-grid>
+
         <ion-row>
-          <ion-col size="6">
+          <ion-col>
             <ion-item>
               <ion-label>Cuenta con Bodega</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
               <ion-select [(ngModel)]="bodega">
                 <ion-select-option value="Si">Sí</ion-select-option>
                 <ion-select-option value="No">No</ion-select-option>
               </ion-select>
             </ion-item>
+          </ion-col>
+        </ion-row>
+        
+        <ion-row>
+          <ion-col>
             <ion-item>
               <ion-label>Breaker Adecuado</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
               <ion-select [(ngModel)]="breakerAdecuado">
                 <ion-select-option value="Si">Sí</ion-select-option>
                 <ion-select-option value="No">No</ion-select-option>
               </ion-select>
             </ion-item>
+          </ion-col>
+        </ion-row>
+        
+        <ion-row>
+          <ion-col>
             <ion-item>
               <ion-label>Señalización</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
               <ion-select [(ngModel)]="senalizacion">
                 <ion-select-option value="Si">Sí</ion-select-option>
                 <ion-select-option value="No">No</ion-select-option>
               </ion-select>
             </ion-item>
+          </ion-col>
+        </ion-row>
+        
+        <ion-row>
+          <ion-col>
             <ion-item>
               <ion-label>Salida de Emergencia</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
               <ion-select [(ngModel)]="salidaEmergencia">
                 <ion-select-option value="Si">Sí</ion-select-option>
                 <ion-select-option value="No">No</ion-select-option>
               </ion-select>
             </ion-item>
           </ion-col>
-
-          <ion-col size="6">
+        </ion-row>
+        
+        <ion-row>
+          <ion-col>
             <ion-item>
               <ion-label>Instalación Adecuada</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
               <ion-select [(ngModel)]="instalacionAdecuada">
                 <ion-select-option value="Si">Sí</ion-select-option>
                 <ion-select-option value="No">No</ion-select-option>
               </ion-select>
             </ion-item>
+          </ion-col>
+        </ion-row>
+        
+        <ion-row>
+          <ion-col>
             <ion-item>
               <ion-label>Cajas Abiertas</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
               <ion-select [(ngModel)]="cajasAbiertas">
                 <ion-select-option value="Si">Sí</ion-select-option>
                 <ion-select-option value="No">No</ion-select-option>
               </ion-select>
             </ion-item>
+          </ion-col>
+        </ion-row>
+        
+        <ion-row>
+          <ion-col>
             <ion-item>
               <ion-label>Rótulo ECU 911</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
               <ion-select [(ngModel)]="rotuloEcu911">
                 <ion-select-option value="Si">Sí</ion-select-option>
                 <ion-select-option value="No">No</ion-select-option>
               </ion-select>
             </ion-item>
+          </ion-col>
+        </ion-row>
+        
+        <ion-row>
+          <ion-col>
             <ion-item>
               <ion-label>Plan de Emergencia</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
               <ion-select [(ngModel)]="planEmergencia">
                 <ion-select-option value="Si">Sí</ion-select-option>
                 <ion-select-option value="No">No</ion-select-option>
@@ -196,11 +265,18 @@
             </ion-item>
           </ion-col>
         </ion-row>
+        
+        
+        
 
         <ion-row>
           <ion-col>
             <ion-item>
               <ion-label>N° de Surtidores</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
               <ion-input type="number" placeholder="Es opcional" [(ngModel)]="nroSurtidores"></ion-input>
             </ion-item>
           </ion-col>
@@ -210,7 +286,9 @@
           <ion-col>
             <ion-item>
               <ion-label position="floating">Observación</ion-label>
-              <ion-input type="text" [(ngModel)]="observacion"></ion-input>
+              <br>
+      
+              <ion-textarea rows="5" [(ngModel)]="observacion" placeholder="Escribe tus observaciones..."></ion-textarea>
             </ion-item>
           </ion-col>
         </ion-row>

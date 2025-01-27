@@ -6,6 +6,9 @@ import { Geolocation } from '@capacitor/geolocation';
 import { Preferences } from '@capacitor/preferences';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-registro',
@@ -60,19 +63,52 @@ export class RegistroPage {
 
   itemId: number = 0;  // Para almacenar el id recibido de la URL
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute,private navCtrl: NavController,private router: Router) {}
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe(async (params) => {
       const id = params.get('id');
       if (id) {
-        this.itemId = +id;  // Convertir a número solo si id tiene un valor
+        this.itemId = +id; // Convertir a número solo si id tiene un valor
+        this.id_tramite = this.itemId;
         console.log('ID del registro:', this.itemId);
+  
+        // Buscar el registro en `datosCargados`
+        await this.obtenerDatosTramite(this.id_tramite);
       } else {
         console.error('ID no encontrado en la URL');
       }
     });
   }
+  
+  async obtenerDatosTramite(idTramite: number) {
+    try {
+      // Obtener los datos de `datosCargados`
+      const datosCargadosResult = await Preferences.get({ key: 'datosCargados' });
+      const datosCargados = datosCargadosResult.value ? JSON.parse(datosCargadosResult.value) : [];
+  
+      // Buscar el registro con el `id_ren_tramite`
+      const registro = datosCargados.find((item: any) => item.id_ren_tramite === idTramite);
+  
+      if (registro) {
+        console.log('Registro encontrado:', registro);
+  
+        // Aquí puedes asignar los valores específicos a variables
+        this.identificacion = registro.idprov || '';
+        this.cuu = registro.cuu || 0;
+        this.razonSocial = registro.razon || '';
+        this.direccion = registro.direccion || '';
+        this.sesion = registro.sesion || '';
+  
+        
+      } else {
+        console.warn(`No se encontró ningún registro con id_ren_tramite = ${idTramite}`);
+      }
+    } catch (error) {
+      console.error('Error al obtener los datos del trámite:', error);
+    }
+  }
+  
 
 
   async obtenerCoordenadas() {
@@ -86,10 +122,73 @@ export class RegistroPage {
     } catch (error) {
       console.error('Error obteniendo coordenadas:', error);
       alert('No se pudo obtener la ubicación. Por favor, revisa los permisos.');
+
+      console.error('Error obteniendo coordenadas:', JSON.stringify(error));
+
+
+
     }
   }
 
   
+
+  // async actualizarInformacion() {
+  //   try {
+  //     const datosFormulario = {
+  //       identificacion: this.identificacion,
+  //       cuu: this.cuu,
+  //       razonSocial: this.razonSocial,
+  //       direccion: this.direccion,
+  //       correoElectronico: this.correoElectronico,
+  //       representanteLegal: this.representanteLegal,
+  //       direccionLocal: this.direccionLocal,
+  //       areaLocal: this.areaLocal,
+  //       tipoConstruccion: this.tipoConstruccion,
+  //       riesgoIncendio: this.riesgoIncendio,
+  //       ventilacion: this.ventilacion,
+  //       bodega: this.bodega,
+  //       breakerAdecuado: this.breakerAdecuado,
+  //       senalizacion: this.senalizacion,
+  //       salidaEmergencia: this.salidaEmergencia,
+  //       instalacionAdecuada: this.instalacionAdecuada,
+  //       cajasAbiertas: this.cajasAbiertas,
+  //       rotuloEcu911: this.rotuloEcu911,
+  //       planEmergencia: this.planEmergencia,
+  //       nroSurtidores: this.nroSurtidores,
+  //       observacion: this.observacion,
+
+  //       // Nuevos valores
+  //       id_tramite_carga: this.id_tramite_carga,
+  //       sesion: this.sesion,
+  //       creacion: this.creacion,
+  //       estado: this.estado,
+  //       id_tramite: this.id_tramite,
+  //       co_x: this.co_x,
+  //       co_y: this.co_y,
+
+  //       // Fotos
+  //       foto1: this.foto1,
+  //       foto2: this.foto2,
+  //       foto3: this.foto3,
+  //       fotos: this.fotos,
+  //     };
+
+  //     const { value } = await Preferences.get({ key: 'formularios' });
+  //     const formularios = value ? JSON.parse(value) : [];
+  //     formularios.push(datosFormulario);
+
+  //     await Preferences.set({
+  //       key: 'formularios',
+  //       value: JSON.stringify(formularios),
+  //     });
+
+  //     console.log('Información guardada en caché:', datosFormulario);
+  //     alert('La información ha sido guardada exitosamente.');
+  //   } catch (error) {
+  //     console.error('Error al guardar la información:', error);
+  //     alert('Hubo un error al guardar la información.');
+  //   }
+  // }
 
   async actualizarInformacion() {
     try {
@@ -115,7 +214,7 @@ export class RegistroPage {
         planEmergencia: this.planEmergencia,
         nroSurtidores: this.nroSurtidores,
         observacion: this.observacion,
-
+  
         // Nuevos valores
         id_tramite_carga: this.id_tramite_carga,
         sesion: this.sesion,
@@ -124,30 +223,59 @@ export class RegistroPage {
         id_tramite: this.id_tramite,
         co_x: this.co_x,
         co_y: this.co_y,
-
+  
         // Fotos
         foto1: this.foto1,
         foto2: this.foto2,
         foto3: this.foto3,
         fotos: this.fotos,
       };
-
-      const { value } = await Preferences.get({ key: 'formularios' });
-      const formularios = value ? JSON.parse(value) : [];
+  
+      // Actualizar los datos en `datosCargados`
+      const datosCargadosResult = await Preferences.get({ key: 'datosCargados' });
+      let datosCargados = datosCargadosResult.value ? JSON.parse(datosCargadosResult.value) : [];
+  
+      datosCargados = datosCargados.map((item: any) => {
+        console.log('Item:', item.id_ren_tramite);
+        if (item.id_ren_tramite === this.id_tramite) {
+          
+          return { ...item, estado: 'Cerrado' }; // Cambiar el estado a cerrado
+         
+        }
+       
+        return item;
+      });
+  
+      await Preferences.set({
+        key: 'datosCargados',
+        value: JSON.stringify(datosCargados),
+      });
+  
+      // Actualizar los datos en `formularios`
+      const formulariosResult = await Preferences.get({ key: 'formularios' });
+      let formularios = formulariosResult.value ? JSON.parse(formulariosResult.value) : [];
+  
       formularios.push(datosFormulario);
-
+  
       await Preferences.set({
         key: 'formularios',
         value: JSON.stringify(formularios),
       });
-
-      console.log('Información guardada en caché:', datosFormulario);
+  
+      console.log('Información guardada en caché.');
+      console.log('Datos cargados actualizados:', datosCargados);
+      console.log('Formulario actualizado:', datosFormulario);
+  
       alert('La información ha sido guardada exitosamente.');
+
+      this.router.navigate(['/lista']);
     } catch (error) {
       console.error('Error al guardar la información:', error);
       alert('Hubo un error al guardar la información.');
     }
   }
+  
+  
 
   async manejarFotos(event?: Event) {
     try {
@@ -207,6 +335,11 @@ export class RegistroPage {
       this.fotos.splice(index, 1); // Elimina la foto del array
       console.log(`Foto en índice ${index} eliminada.`);
     }
+  }
+
+  goBack() {
+    // this.navCtrl.back();
+    this.router.navigate(['/lista']);
   }
   
   
