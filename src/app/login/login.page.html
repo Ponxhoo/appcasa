@@ -4,13 +4,47 @@
       <ion-icon name="person-circle-outline" class="profile-icon"></ion-icon>
     </div>
     <div class="form-container">
-      <div class="custom-input">
-        <ion-input type="text" placeholder="Identificación" [(ngModel)]="identificacion"></ion-input>
-      </div>
-      <div class="custom-input">
-        <ion-input type="email" placeholder="Email" [(ngModel)]="email"></ion-input>
-      </div>
-      <ion-button expand="block" class="login-button" (click)="saveData()">Ingresar</ion-button>
+      <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)"> <!-- Formulario -->
+        <div class="custom-input">
+          <ion-item>
+           
+            <ion-input
+              type="text"
+              placeholder="Identificación"
+              [(ngModel)]="identificacion"
+              name="identificacion"
+              required
+              minlength="10"
+              maxlength="10"
+            ></ion-input>
+          </ion-item>
+          <div *ngIf="loginForm.submitted && loginForm.controls['identificacion']?.invalid" class="error-message">
+            <small *ngIf="loginForm.controls['identificacion']?.errors?.['required']">La identificación es obligatoria.</small>
+            <small *ngIf="loginForm.controls['identificacion']?.errors?.['minlength']">Debe tener al menos 10 caracteres.</small>
+            <small *ngIf="loginForm.controls['identificacion']?.errors?.['maxlength']">Debe tener como máximo 10 caracteres.</small>
+          </div>
+        </div>
+
+        <div class="custom-input">
+          <ion-item>
+           
+            <ion-input
+              type="email"
+              placeholder="Email"
+              [(ngModel)]="email"
+              name="email"
+              required
+              email
+            ></ion-input>
+          </ion-item>
+          <div *ngIf="loginForm.submitted && loginForm.controls['email']?.invalid" class="error-message">
+            <small *ngIf="loginForm.controls['email']?.errors?.['required']">El email es obligatorio.</small>
+            <small *ngIf="loginForm.controls['email']?.errors?.['email']">Debe ingresar un email válido.</small>
+          </div>
+        </div>
+
+        <ion-button expand="block" class="login-button" type="submit">Ingresar</ion-button>
+      </form>
     </div>
   </div>
 </ion-content>

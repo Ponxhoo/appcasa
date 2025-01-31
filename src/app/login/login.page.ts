@@ -22,6 +22,18 @@ export class LoginPage {
     this.router.navigate(['/home']);
   }
 
+  onSubmit(form: any) {
+    if (form.valid) {
+      console.log('Formulario válido:', { identificacion: this.identificacion, email: this.email });
+      // Lógica para guardar datos
+      this.saveData();
+    } else {
+      console.error('Formulario inválido:', form);
+    }
+  }
+
+  
+
   async saveData() {
     try {
       // Guarda la identificación en Preferences

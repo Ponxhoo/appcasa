@@ -4,15 +4,15 @@ ion-content {
 }
 
 .welcome {
-  text-align: center;
+  text-align: left;
   margin-top: 30px;
   margin-bottom: 20px;
-  color: #333;
+  color: #3178dd;
   font-size: 20px;
 }
 
-.welcome h2 span {
-  color: #6500ff;
+.welcome h2  {
+  color: #080808;
   font-weight: bold;
 }
 
@@ -22,7 +22,7 @@ ion-content {
   gap: 16px;
   padding: 16px;
   justify-items: center !important;
-  margin-top: 10%; /* Valor predeterminado */
+  margin-top: 2%; /* Valor predeterminado */
 
   /* Ajustes responsivos */
   @media (max-width: 1024px) and (orientation: portrait) { /* Tablets en modo vertical */
@@ -137,4 +137,51 @@ ion-header ion-toolbar {
   color: #007bff; /* Color del texto */
   font-weight: bold; /* Negrita */
   text-align: center; /* Centrar el texto */
+}
+
+
+.welcome-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.welcome-card {
+  width: 100%; /* Ocupará todo el ancho */
+  max-width: 1200px; /* Máximo ancho en pantallas grandes */
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px; /* Espaciado interno */
+  background-color: #fff;
+}
+
+.title {
+  text-align: center;
+  font-size: 24px;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.label {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.value {
+  font-size: 18px;
+  color: #555;
+  font-weight: normal;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+
+.report-text {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 16px;
+  color: #444;
+  line-height: 1.5;
 }

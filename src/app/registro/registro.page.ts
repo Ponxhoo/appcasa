@@ -8,6 +8,7 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -118,7 +119,19 @@ export class RegistroPage {
       this.co_y = position.coords.longitude;
 
       console.log('Coordenadas obtenidas:', { co_x: this.co_x, co_y: this.co_y });
-      alert(`Latitud: ${this.co_x}, Longitud: ${this.co_y}`);
+      //alert(`Latitud: ${this.co_x}, Longitud: ${this.co_y}`);
+
+
+      Swal.fire({
+        title: 'Coordenadas obtenidas:',
+        text: `Latitud: ${this.co_x}, Longitud: ${this.co_y}`,
+        icon: 'success',
+        width: '90%', // Ajusta el ancho
+        heightAuto: false, // Evita que el alto sea automático
+        confirmButtonText: 'Aceptar',
+      });
+
+      
     } catch (error) {
       console.error('Error obteniendo coordenadas:', error);
       alert('No se pudo obtener la ubicación. Por favor, revisa los permisos.');
@@ -266,7 +279,16 @@ export class RegistroPage {
       console.log('Datos cargados actualizados:', datosCargados);
       console.log('Formulario actualizado:', datosFormulario);
   
-      alert('La información ha sido guardada exitosamente.');
+      
+      // Mensaje de éxito
+      Swal.fire({
+        title: 'La información ha sido guardada exitosamente.',
+        text: 'Toda la información se envió correctamente.',
+        icon: 'success',
+        width: '90%', // Ajusta el ancho
+        heightAuto: false, // Evita que el alto sea automático
+        confirmButtonText: 'Aceptar',
+      });
 
       this.router.navigate(['/lista']);
     } catch (error) {
@@ -341,6 +363,8 @@ export class RegistroPage {
     // this.navCtrl.back();
     this.router.navigate(['/lista']);
   }
+
+  
   
   
   

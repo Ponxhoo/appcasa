@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Preferences } from '@capacitor/preferences';
 import { ActivatedRoute } from '@angular/router';
+import { App } from '@capacitor/app';
+import { Capacitor } from '@capacitor/core';
+
 import Swal from 'sweetalert2';
 
 @Component({
@@ -20,18 +23,32 @@ export class HomePage {
   ];
 
   identificacion: string = '';
+  correo : string = '';
+  fechaActual: string = '';
 
   constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe(async () => {
       await this.fijarIdentificacion();
+      await this.obtenerFechaActual();
     });
   }
 
   async fijarIdentificacion() {
     const sesion = await Preferences.get({ key: 'identificacion' });
-    this.identificacion = sesion.value ? JSON.parse(sesion.value) : '';
+    const sesion2 = await Preferences.get({ key: 'email' });
+    this.identificacion = sesion.value ? sesion.value : '';
+    this.correo = sesion2.value ? sesion2.value : '';
+  }
+
+  async obtenerFechaActual() {
+    const fecha = new Date();
+    const año = fecha.getFullYear();
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Mes comienza en 0
+    const dia = String(fecha.getDate()).padStart(2, '0');
+
+    this.fechaActual = `${año}-${mes}-${dia}`;
   }
 
   selectRoom(room: any) {
@@ -51,7 +68,14 @@ export class HomePage {
       if (room.name === 'Cerrar Sesión') {
         this.confirmLogout(); // Muestra la confirmación para cerrar sesión
       } else {
-      this.navigateTo(room.route);
+        if(room.name === 'Enviar Información') {
+          this.confirmAndSendData(); // Muestra la confirmación para cerrar sesión
+        }
+        else{
+          this.navigateTo(room.route);
+
+        }  
+      
       }
     }
   }
@@ -144,7 +168,6 @@ export class HomePage {
     }
   }
 
-
    // Función para mostrar la confirmación de cierre de sesión
    async confirmLogout() {
     const result = await Swal.fire({
@@ -177,7 +200,13 @@ export class HomePage {
       console.log('Caché limpiado. Redirigiendo al login.');
 
       // Redirigir al login
-      this.router.navigate(['/login']);
+      // this.router.navigate(['/login']);
+
+      if (Capacitor.isNativePlatform()) {
+        App.exitApp();
+      } else {
+        console.log('App.exitApp() solo funciona en dispositivos reales.');
+      }
 
       // Mensaje de éxito
       Swal.fire({
@@ -209,5 +238,118 @@ export class HomePage {
         },
       });
     }
+  }
+
+  async confirmAndSendData() {
+    // Mostrar confirmación al usuario
+    const result = await Swal.fire({
+      title: '¿Estás seguro de enviar la información?',
+      text: 'Se enviará toda la información guardada.',
+      icon: 'warning',
+      showCancelButton: true,
+      width: '90%', // Ajusta el ancho
+      heightAuto: false, // Evita que el alto sea automático
+      confirmButtonText: 'Sí, enviar',
+      cancelButtonText: 'Cancelar',
+      customClass: {
+        popup: 'custom-swal-popup',
+        title: 'custom-swal-title',
+      },
+    });
+
+    if (result.isConfirmed) {
+      // Llamar a la función para enviar los datos
+      await this.sendDataToApi();
+    } else {
+      Swal.fire({
+        title: 'Envío cancelado',
+        text: 'No se realizó ningún envío.',
+        icon: 'info',
+        confirmButtonText: 'Aceptar',
+        customClass: {
+          popup: 'custom-swal-popup',
+          title: 'custom-swal-title',
+        },
+      });
+    }
+  }
+
+  async sendDataToApi() {
+    try {
+      // Obtener los datos almacenados en caché
+      const { value } = await Preferences.get({ key: 'formularios' });
+      const formularios = value ? JSON.parse(value) : [];
+
+      if (formularios.length === 0) {
+        Swal.fire({
+          title: 'No hay datos para enviar',
+          text: 'No se encontraron formularios guardados.',
+          icon: 'info',
+          width: '90%', // Ajusta el ancho
+          heightAuto: false, // Evita que el alto sea automático
+          confirmButtonText: 'Aceptar',
+        });
+        return;
+      }
+
+      // URL de la API
+      const apiUrl = 'https://g-kaipi.cloud/CB-OnlineLoreto/kservicios/view/subir_cache'; // Reemplaza con tu API real
+
+      // Enviar cada formulario a la API
+      for (const formulario of formularios) {
+        try {
+          const response = await this.http.post(apiUrl, formulario).toPromise();
+          console.log('Formulario enviado:', formulario);
+          console.log('Respuesta de la API:', response);
+
+        } catch (error) {
+          console.error('Error al enviar formulario:', formulario, error);
+          Swal.fire({
+            title: 'Error al enviar datos',
+            text: 'Hubo un problema al enviar la información.',
+            icon: 'error',
+            width: '90%', // Ajusta el ancho
+            heightAuto: false, // Evita que el alto sea automático
+            confirmButtonText: 'Aceptar',
+          });
+
+        }
+      }
+      // Retraso de 5 segundos
+      await this.sleep(5000);
+
+      this.logout(); // Llamar a la función que limpia la caché y redirige
+
+      // // Mensaje de éxito
+      // Swal.fire({
+      //   title: 'Datos enviados con éxito',
+      //   text: 'Toda la información se envió correctamente.',
+      //   icon: 'success',
+      //   width: '90%', // Ajusta el ancho
+      //   heightAuto: false, // Evita que el alto sea automático
+      //   confirmButtonText: 'Aceptar',
+      // });
+
+      // Limpia la caché después de enviar
+      await Preferences.remove({ key: 'formularios' });
+
+    } catch (error) {
+      console.error('Error al enviar datos:', error);
+
+      // Mostrar mensaje de error
+      Swal.fire({
+        title: 'Error al enviar datos',
+        text: 'Hubo un problema al enviar la información.',
+        icon: 'error',
+        width: '90%', // Ajusta el ancho
+        heightAuto: false, // Evita que el alto sea automático
+        confirmButtonText: 'Aceptar',
+      });
+    }
+  }
+
+  // Función sleep para manejar retrasos
+  sleep(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }
