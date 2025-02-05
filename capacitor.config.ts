@@ -4,7 +4,11 @@
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
   appName: 'gkapp',
-  webDir: 'www'
+  webDir: 'www',
+  server: {
+    androidScheme: 'https',  // Asegura que en Android use HTTPS
+    cleartext: false
+  }
 };
 
 export default config;

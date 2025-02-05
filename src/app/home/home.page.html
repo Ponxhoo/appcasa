@@ -34,7 +34,7 @@
           </ion-row>
         </ion-grid>
   
-        <p class="report-text">
+        <p *ngIf="tienePendientes" class="report-text">
           📅 <strong>Reporte de inspección del día {{ fechaActual }}</strong>. <br>
           Verifique la información y complete los casilleros para actualizar la ficha del contribuyente.
         </p>

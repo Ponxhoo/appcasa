@@ -25,6 +25,9 @@ export class HomePage {
   identificacion: string = '';
   correo : string = '';
   fechaActual: string = '';
+  datosCargados: any[] = []; // Variable para almacenar los datos
+  tienePendientes: boolean = false; // Variable para mostrar/ocultar el texto
+
 
   constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient) {}
 
@@ -32,7 +35,23 @@ export class HomePage {
     this.route.paramMap.subscribe(async () => {
       await this.fijarIdentificacion();
       await this.obtenerFechaActual();
+      await this.verificarPendientes();
     });
+  }
+
+
+  async verificarPendientes() {
+    const { value } = await Preferences.get({ key: 'datosCargados' });
+
+    if (value) {
+      const datosCargados = JSON.parse(value); // Convertir el JSON a un array
+      const pendientes = datosCargados.filter((item: any) => item.estado === 'Pendiente'); // Filtrar por estado "Pendiente"
+
+      console.log(`Número de pendientes: ${pendientes.length}`);
+      this.tienePendientes = pendientes.length > 0; // Si hay al menos un pendiente, mostrar el mensaje
+    } else {
+      this.tienePendientes = false; // No hay datos, ocultar el mensaje
+    }
   }
 
   async fijarIdentificacion() {
@@ -265,6 +284,8 @@ export class HomePage {
         title: 'Envío cancelado',
         text: 'No se realizó ningún envío.',
         icon: 'info',
+        width: '90%', // Ajusta el ancho
+        heightAuto: false, // Evita que el alto sea automático
         confirmButtonText: 'Aceptar',
         customClass: {
           popup: 'custom-swal-popup',
@@ -274,79 +295,164 @@ export class HomePage {
     }
   }
 
+  // async sendDataToApi() {
+  //   try {
+  //     // Obtener los datos almacenados en caché
+  //     const { value } = await Preferences.get({ key: 'formularios' });
+  //     const formularios = value ? JSON.parse(value) : [];
+
+  //     if (formularios.length === 0) {
+  //       Swal.fire({
+  //         title: 'No hay datos para enviar',
+  //         text: 'No se encontraron formularios guardados.',
+  //         icon: 'info',
+  //         width: '90%', // Ajusta el ancho
+  //         heightAuto: false, // Evita que el alto sea automático
+  //         confirmButtonText: 'Aceptar',
+  //       });
+  //       return;
+  //     }
+
+  //     // URL de la API
+  //     const apiUrl = 'https://g-kaipi.cloud/CB-OnlineLoreto/kservicios/view/subir_cache'; // Reemplaza con tu API real
+
+  //     // Enviar cada formulario a la API
+  //     for (const formulario of formularios) {
+  //       try {
+  //         const response = await this.http.post(apiUrl, formulario).toPromise();
+  //         console.log('Formulario enviado:', formulario);
+  //         console.log('Respuesta de la API:', response);
+
+  //       } catch (error) {
+  //         console.error('Error al enviar formulario:', formulario, error);
+  //         Swal.fire({
+  //           title: 'Error al enviar datos',
+  //           text: 'Hubo un problema al enviar la información.',
+  //           icon: 'error',
+  //           width: '90%', // Ajusta el ancho
+  //           heightAuto: false, // Evita que el alto sea automático
+  //           confirmButtonText: 'Aceptar',
+  //         });
+
+  //       }
+  //     }
+  //     // Retraso de 5 segundos
+  //     await this.sleep(5000);
+
+  //     this.logout(); // Llamar a la función que limpia la caché y redirige
+
+  //     // // Mensaje de éxito
+  //     // Swal.fire({
+  //     //   title: 'Datos enviados con éxito',
+  //     //   text: 'Toda la información se envió correctamente.',
+  //     //   icon: 'success',
+  //     //   width: '90%', // Ajusta el ancho
+  //     //   heightAuto: false, // Evita que el alto sea automático
+  //     //   confirmButtonText: 'Aceptar',
+  //     // });
+
+  //     // Limpia la caché después de enviar
+  //     await Preferences.remove({ key: 'formularios' });
+
+  //   } catch (error) {
+  //     console.error('Error al enviar datos:', error);
+
+  //     // Mostrar mensaje de error
+  //     Swal.fire({
+  //       title: 'Error al enviar datos',
+  //       text: 'Hubo un problema al enviar la información.',
+  //       icon: 'error',
+  //       width: '90%', // Ajusta el ancho
+  //       heightAuto: false, // Evita que el alto sea automático
+  //       confirmButtonText: 'Aceptar',
+  //     });
+  //   }
+  // }
+
   async sendDataToApi() {
     try {
-      // Obtener los datos almacenados en caché
-      const { value } = await Preferences.get({ key: 'formularios' });
-      const formularios = value ? JSON.parse(value) : [];
+        // Obtener los datos almacenados en caché
+        const { value } = await Preferences.get({ key: 'formularios' });
+        const formularios = value ? JSON.parse(value) : [];
 
-      if (formularios.length === 0) {
+        if (formularios.length === 0) {
+            Swal.fire({
+                title: 'No hay datos para enviar',
+                text: 'No se encontraron formularios guardados.',
+                icon: 'info',
+                width: '90%', // Ajusta el ancho
+                heightAuto: false, // Evita que el alto sea automático
+                confirmButtonText: 'Aceptar',
+            });
+            return;
+        }
+
+        // ✅ URL de la API - Ahora se accede a través del proxy
+        
+        const apiUrl = 'https://g-kaipi.cloud/CB-OnlineLoreto/kservicios/view/subir_cache'; // ✅ Correcto
+
+
+        for (const formulario of formularios) {
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formulario)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error en la API: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                console.log('Formulario enviado:', formulario);
+                console.log('Respuesta de la API:', data);
+
+            } catch (error) {
+                console.error('Error al enviar formulario:', formulario, error);
+                Swal.fire({
+                    title: 'Error al enviar datos',
+                    text: 'Hubo un problema al enviar la información.',
+                    icon: 'error',
+                    width: '90%', // Ajusta el ancho
+                    heightAuto: false, // Evita que el alto sea automático
+                    confirmButtonText: 'Aceptar',
+                });
+            }
+        }
+
+        // Retraso de 5 segundos antes de cerrar sesión
+        await new Promise(resolve => setTimeout(resolve, 5000));
+
+        this.logout(); // Llamar a la función que limpia la caché y redirige
+
+        // Limpiar la caché después de enviar
+        await Preferences.remove({ key: 'formularios' });
+
         Swal.fire({
-          title: 'No hay datos para enviar',
-          text: 'No se encontraron formularios guardados.',
-          icon: 'info',
-          width: '90%', // Ajusta el ancho
-          heightAuto: false, // Evita que el alto sea automático
-          confirmButtonText: 'Aceptar',
+            title: 'Datos enviados con éxito',
+            text: 'Toda la información se envió correctamente.',
+            icon: 'success',
+            width: '90%', // Ajusta el ancho
+            heightAuto: false, // Evita que el alto sea autom
+            confirmButtonText: 'Aceptar',
         });
-        return;
-      }
 
-      // URL de la API
-      const apiUrl = 'https://g-kaipi.cloud/CB-OnlineLoreto/kservicios/view/subir_cache'; // Reemplaza con tu API real
-
-      // Enviar cada formulario a la API
-      for (const formulario of formularios) {
-        try {
-          const response = await this.http.post(apiUrl, formulario).toPromise();
-          console.log('Formulario enviado:', formulario);
-          console.log('Respuesta de la API:', response);
-
-        } catch (error) {
-          console.error('Error al enviar formulario:', formulario, error);
-          Swal.fire({
+    } catch (error) {
+        console.error('Error al enviar datos:', error);
+        Swal.fire({
             title: 'Error al enviar datos',
             text: 'Hubo un problema al enviar la información.',
             icon: 'error',
             width: '90%', // Ajusta el ancho
             heightAuto: false, // Evita que el alto sea automático
             confirmButtonText: 'Aceptar',
-          });
-
-        }
-      }
-      // Retraso de 5 segundos
-      await this.sleep(5000);
-
-      this.logout(); // Llamar a la función que limpia la caché y redirige
-
-      // // Mensaje de éxito
-      // Swal.fire({
-      //   title: 'Datos enviados con éxito',
-      //   text: 'Toda la información se envió correctamente.',
-      //   icon: 'success',
-      //   width: '90%', // Ajusta el ancho
-      //   heightAuto: false, // Evita que el alto sea automático
-      //   confirmButtonText: 'Aceptar',
-      // });
-
-      // Limpia la caché después de enviar
-      await Preferences.remove({ key: 'formularios' });
-
-    } catch (error) {
-      console.error('Error al enviar datos:', error);
-
-      // Mostrar mensaje de error
-      Swal.fire({
-        title: 'Error al enviar datos',
-        text: 'Hubo un problema al enviar la información.',
-        icon: 'error',
-        width: '90%', // Ajusta el ancho
-        heightAuto: false, // Evita que el alto sea automático
-        confirmButtonText: 'Aceptar',
-      });
+        });
     }
-  }
+}
+
 
   // Función sleep para manejar retrasos
   sleep(ms: number): Promise<void> {
