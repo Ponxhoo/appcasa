@@ -145,63 +145,7 @@ export class RegistroPage {
     }
   }
 
-  // async actualizarInformacion() {
-  //   try {
-  //     const datosFormulario = {
-  //       identificacion: this.identificacion,
-  //       cuu: this.cuu,
-  //       razonSocial: this.razonSocial,
-  //       direccion: this.direccion,
-  //       correoElectronico: this.correoElectronico,
-  //       representanteLegal: this.representanteLegal,
-  //       direccionLocal: this.direccionLocal,
-  //       areaLocal: this.areaLocal,
-  //       tipoConstruccion: this.tipoConstruccion,
-  //       riesgoIncendio: this.riesgoIncendio,
-  //       ventilacion: this.ventilacion,
-  //       bodega: this.bodega,
-  //       breakerAdecuado: this.breakerAdecuado,
-  //       senalizacion: this.senalizacion,
-  //       salidaEmergencia: this.salidaEmergencia,
-  //       instalacionAdecuada: this.instalacionAdecuada,
-  //       cajasAbiertas: this.cajasAbiertas,
-  //       rotuloEcu911: this.rotuloEcu911,
-  //       planEmergencia: this.planEmergencia,
-  //       nroSurtidores: this.nroSurtidores,
-  //       observacion: this.observacion,
-
-  //       // Nuevos valores
-  //       id_tramite_carga: this.id_tramite_carga,
-  //       sesion: this.sesion,
-  //       creacion: this.creacion,
-  //       estado: this.estado,
-  //       id_tramite: this.id_tramite,
-  //       co_x: this.co_x,
-  //       co_y: this.co_y,
-
-  //       // Fotos
-  //       foto1: this.foto1,
-  //       foto2: this.foto2,
-  //       foto3: this.foto3,
-  //       fotos: this.fotos,
-  //     };
-
-  //     const { value } = await Preferences.get({ key: 'formularios' });
-  //     const formularios = value ? JSON.parse(value) : [];
-  //     formularios.push(datosFormulario);
-
-  //     await Preferences.set({
-  //       key: 'formularios',
-  //       value: JSON.stringify(formularios),
-  //     });
-
-  //     console.log('Información guardada en caché:', datosFormulario);
-  //     alert('La información ha sido guardada exitosamente.');
-  //   } catch (error) {
-  //     console.error('Error al guardar la información:', error);
-  //     alert('Hubo un error al guardar la información.');
-  //   }
-  // }
+  
 
   async actualizarInformacion() {
 
@@ -227,7 +171,7 @@ export class RegistroPage {
         direccion: this.direccion,
         correoElectronico: this.correoElectronico,
         representanteLegal: this.representanteLegal,
-        direccionLocal: this.direccionLocal,
+        direcionLocal: this.direccionLocal,
         areaLocal: this.areaLocal,
         tipoConstruccion: this.tipoConstruccion,
         riesgoIncendio: this.riesgoIncendio,
@@ -242,6 +186,7 @@ export class RegistroPage {
         planEmergencia: this.planEmergencia,
         nroSurtidores: this.nroSurtidores,
         observacion: this.observacion,
+        length :0 ,
 
         // Nuevos valores
         id_tramite_carga: this.id_tramite_carga,
