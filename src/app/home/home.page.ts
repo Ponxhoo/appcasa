@@ -33,11 +33,51 @@ export class HomePage {
 
   ngOnInit() {
     this.route.paramMap.subscribe(async () => {
+      await this.validarSesion();
       await this.fijarIdentificacion();
       await this.obtenerFechaActual();
       await this.verificarPendientes();
     });
   }
+
+
+  async validarSesion() {
+      try {
+          // Obtener los valores almacenados en Preferences
+          const identificacion = await Preferences.get({ key: 'identificacion' });
+          const email = await Preferences.get({ key: 'email' });
+    
+          // Verificar si los valores existen y no están vacíos
+          if (!identificacion.value || !email.value) {
+              console.warn('Sesión no válida. Redirigiendo al login.');
+    
+              // Mostrar alerta y redirigir al login
+              Swal.fire({
+                  title: 'Sesión no válida',
+                  text: 'Debes iniciar sesión para acceder.',
+                  icon: 'warning',
+                  width: '90%', // Ajusta el ancho
+                  heightAuto: false, // Evita que el alto sea automático
+                  confirmButtonText: 'Aceptar'
+              }).then(() => {
+                  this.router.navigate(['/login']); // Redirigir al login
+              });
+    
+              return false; // Indica que la sesión no es válida
+          }
+    
+          console.log('Sesión válida:', identificacion.value, email.value);
+          return true; // Indica que la sesión es válida
+    
+      } catch (error) {
+          console.error('Error al validar sesión:', error);
+    
+          // En caso de error, redirigir al login
+          this.router.navigate(['/login']);
+          return false;
+      }
+    }
+  
 
 
   async verificarPendientes() {
@@ -136,48 +176,65 @@ export class HomePage {
 
   // Método para consumir la API y guardar valores en caché
   async loadData() {
-    const apiUrl = 'https://g-kaipi.cloud/CB-OnlineLoreto/kservicios/view/envioinspeccion';
-
+    const baseUrl = localStorage.getItem('apiUrl');
+    const apiUrl = `${baseUrl}/kservicios/view/envioinspeccion`;
+  
     try {
       const response: any = await this.http.get(apiUrl).toPromise();
-
-      // Procesar y agregar estado a los datos
+  
+      // Verificar si la API devolvió un mensaje de error o está vacía
+      if (response?.error === 'No se encontraron registros.') {
+        Swal.fire({
+          title: 'Sin datos',
+          text: 'No hay registros disponibles.',
+          icon: 'info',
+          confirmButtonText: 'Aceptar',
+          width: '90%',
+          heightAuto: false,
+          customClass: {
+            popup: 'custom-swal-popup',
+            title: 'custom-swal-title',
+          },
+        });
+        return;
+      }
+  
+      // Procesar y agregar estado a los datos si hay resultados
       const processedData = response.map((item: any) => ({
         ...item,
         estado: 'Pendiente',
       }));
-
+  
       // Guardar los datos procesados en caché
       await Preferences.set({
         key: 'datosCargados',
         value: JSON.stringify(processedData),
       });
-
+  
       console.log('Datos cargados y guardados en caché:', processedData);
-
-      // Mostrar mensaje de éxito
+  
       Swal.fire({
         title: 'Sincronización exitosa',
         text: 'Los datos se han sincronizado correctamente.',
         icon: 'success',
         confirmButtonText: 'Aceptar',
-        width: '90%', // Ajusta el ancho
-        heightAuto: false, // Evita que el alto sea automático
+        width: '90%',
+        heightAuto: false,
         customClass: {
           popup: 'custom-swal-popup',
           title: 'custom-swal-title',
         },
       });
+  
     } catch (error) {
       console.error('Error al cargar los datos:', error);
-
-      // Mostrar mensaje de error
+  
       Swal.fire({
         title: 'Error al sincronizar',
         text: 'No se pudo conectar con la API.',
         icon: 'error',
-        width: '90%', // Ajusta el ancho
-        heightAuto: false, // Evita que el alto sea automático
+        width: '90%',
+        heightAuto: false,
         confirmButtonText: 'Aceptar',
         customClass: {
           popup: 'custom-swal-popup',
@@ -186,6 +243,7 @@ export class HomePage {
       });
     }
   }
+  
 
    // Función para mostrar la confirmación de cierre de sesión
    async confirmLogout() {
@@ -226,6 +284,8 @@ export class HomePage {
       } else {
         console.log('App.exitApp() solo funciona en dispositivos reales.');
       }
+
+      await new Promise(resolve => setTimeout(resolve, 3000));
 
       // Mensaje de éxito
       Swal.fire({
@@ -301,7 +361,7 @@ export class HomePage {
     try {
         // Obtener los datos almacenados en caché
         const { value } = await Preferences.get({ key: 'formularios' });
-        const formularios = value ? JSON.parse(value) : [];
+        let formularios = value ? JSON.parse(value) : [];
 
         if (formularios.length === 0) {
             Swal.fire({
@@ -315,10 +375,12 @@ export class HomePage {
             return;
         }
 
-        // ✅ URL de la API - Ahora se accede a través del proxy
+        // ✅ URL de la API
         
-        const apiUrl = 'https://g-kaipi.cloud/CB-OnlineLoreto/kservicios/view/subir_cache'; // ✅ Correcto
+        //const apiUrl = 'https://g-kaipi.cloud/CB-OnlineLoreto/kservicios/view/subir_cache';
+        const apiUrl = localStorage.getItem('apiUrl')+'/kservicios/view/subir_cache';
 
+        let formulariosFallidos = []; // Para almacenar los formularios que no se enviaron correctamente
 
         for (const formulario of formularios) {
             try {
@@ -330,33 +392,38 @@ export class HomePage {
                     body: JSON.stringify(formulario)
                 });
 
-                if (!response.ok) {
-                    throw new Error(`Error en la API: ${response.statusText}`);
+                const data = await response.json(); // Convertir la respuesta a JSON
+
+                if (!response.ok || data.message !== "Datos recibidos correctamente") {
+                    throw new Error(`Error en la API: ${data.message || response.statusText}`);
                 }
 
-                const data = await response.json();
-                console.log('Formulario enviado:', formulario);
+                console.log('Formulario enviado con éxito:', formulario);
                 console.log('Respuesta de la API:', data);
 
             } catch (error) {
                 console.error('Error al enviar formulario:', formulario, error);
-                Swal.fire({
-                    title: 'Error al enviar datos',
-                    text: 'Hubo un problema al enviar la información.',
-                    icon: 'error',
-                    width: '90%', // Ajusta el ancho
-                    heightAuto: false, // Evita que el alto sea automático
-                    confirmButtonText: 'Aceptar',
-                });
+                formulariosFallidos.push(formulario); // Mantener este formulario en la caché
             }
         }
 
-        // Retraso de 5 segundos antes de cerrar sesión
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        // Si quedan formularios fallidos, actualizar la caché con los que no se enviaron
+        if (formulariosFallidos.length > 0) {
+            await Preferences.set({ key: 'formularios', value: JSON.stringify(formulariosFallidos) });
 
-        this.logout(); // Llamar a la función que limpia la caché y redirige
+            Swal.fire({
+                title: 'Algunos datos no se enviaron',
+                text: 'Hubo un problema con algunos formularios. Intenta enviarlos de nuevo.',
+                icon: 'warning',
+                width: '90%', // Ajusta el ancho
+                heightAuto: false, // Evita que el alto sea automático
+                confirmButtonText: 'Aceptar',
+            });
 
-        // Limpiar la caché después de enviar
+            return; // No cerrar sesión, ya que hay formularios sin enviar
+        }
+
+        // ✅ Si todos se enviaron correctamente, limpiar caché y cerrar sesión
         await Preferences.remove({ key: 'formularios' });
 
         Swal.fire({
@@ -364,9 +431,14 @@ export class HomePage {
             text: 'Toda la información se envió correctamente.',
             icon: 'success',
             width: '90%', // Ajusta el ancho
-            heightAuto: false, // Evita que el alto sea autom
+            heightAuto: false, // Evita que el alto sea automático
             confirmButtonText: 'Aceptar',
         });
+
+        // Retraso de 3 segundos antes de cerrar sesión
+        await new Promise(resolve => setTimeout(resolve, 5000));
+
+        this.logout(); // Cerrar sesión
 
     } catch (error) {
         console.error('Error al enviar datos:', error);
@@ -380,6 +452,7 @@ export class HomePage {
         });
     }
 }
+
 
 
   // Función sleep para manejar retrasos

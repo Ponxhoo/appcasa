@@ -61,6 +61,8 @@ export class RegistroPage {
 
   itemId: number = 0; // Para almacenar el id recibido de la URL
 
+  fechaActual: string = '';
+
   constructor(
     private route: ActivatedRoute,
     private navCtrl: NavController,
@@ -68,6 +70,7 @@ export class RegistroPage {
   ) {}
 
   ngOnInit() {
+    this.validarSesion(); // Verificar si la sesión es válida
     this.route.paramMap.subscribe(async (params) => {
       const id = params.get('id');
       if (id) {
@@ -80,6 +83,7 @@ export class RegistroPage {
       } else {
         console.error('ID no encontrado en la URL');
       }
+      await this.obtenerFechaActual();
     });
   }
 
@@ -139,7 +143,16 @@ export class RegistroPage {
       });
     } catch (error) {
       console.error('Error obteniendo coordenadas:', error);
-      alert('No se pudo obtener la ubicación. Por favor, revisa los permisos.');
+      
+
+      Swal.fire({
+        title: 'Error',
+        text: `No se pudo obtener la ubicación. Por favor, revisa los permisos. Y activa la ubicaciòn`,
+        icon: 'error',
+        width: '90%', // Ajusta el ancho
+        heightAuto: false, // Evita que el alto sea automático
+        confirmButtonText: 'Aceptar',
+      });
 
       console.error('Error obteniendo coordenadas:', JSON.stringify(error));
     }
@@ -191,7 +204,7 @@ export class RegistroPage {
         // Nuevos valores
         id_tramite_carga: this.id_tramite_carga,
         sesion: this.sesion,
-        creacion: this.creacion,
+        creacion: this.fechaActual,
         estado: this.estado,
         id_tramite: this.id_tramite,
         co_x: this.co_x,
@@ -288,6 +301,45 @@ validarFormulario(): string[] {
 }
 
 
+async validarSesion() {
+  try {
+      // Obtener los valores almacenados en Preferences
+      const identificacion = await Preferences.get({ key: 'identificacion' });
+      const email = await Preferences.get({ key: 'email' });
+
+      // Verificar si los valores existen y no están vacíos
+      if (!identificacion.value || !email.value) {
+          console.warn('Sesión no válida. Redirigiendo al login.');
+
+          // Mostrar alerta y redirigir al login
+          Swal.fire({
+              title: 'Sesión no válida',
+              text: 'Debes iniciar sesión para acceder.',
+              icon: 'warning',
+              width: '90%', // Ajusta el ancho
+              heightAuto: false, // Evita que el alto sea automático
+              confirmButtonText: 'Aceptar'
+          }).then(() => {
+              this.router.navigate(['/login']); // Redirigir al login
+          });
+
+          return false; // Indica que la sesión no es válida
+      }
+
+      console.log('Sesión válida:', identificacion.value, email.value);
+      return true; // Indica que la sesión es válida
+
+  } catch (error) {
+      console.error('Error al validar sesión:', error);
+
+      // En caso de error, redirigir al login
+      this.router.navigate(['/login']);
+      return false;
+  }
+}
+
+
+
   
 
   async manejarFotos(event?: Event) {
@@ -356,5 +408,14 @@ validarFormulario(): string[] {
   goBack() {
     // this.navCtrl.back();
     this.router.navigate(['/lista']);
+  }
+
+  async obtenerFechaActual() {
+    const fecha = new Date();
+    const año = fecha.getFullYear();
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Mes comienza en 0
+    const dia = String(fecha.getDate()).padStart(2, '0');
+
+    this.fechaActual = `${año}-${mes}-${dia}`;
   }
 }
