@@ -273,6 +273,7 @@ export class HomePage {
       // Limpiar las variables de caché
       await Preferences.remove({ key: 'identificacion' });
       await Preferences.remove({ key: 'email' });
+  
 
       console.log('Caché limpiado. Redirigiendo al login.');
 
